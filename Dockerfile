@@ -63,6 +63,7 @@ WORKDIR /usr/local/src/protobuf
 RUN git reset --hard ca9bbd71d547a05604e8c2bddda66cdba5abe0c4 && \
     ./autogen.sh && \
     ./configure \
+      --disable-static \
       --prefix=/usr/local \
       --with-gnu-ld \
     && make && make install && make distclean && ldconfig
@@ -89,7 +90,7 @@ ENV ESTDIR /usr/local/src/speech_tools
 ENV FESTVOXDIR /usr/local/src/festvox
 ENV SPTKDIR /usr/local
 
-# Build and install SP-TK
+# Build and install SPTK
 WORKDIR /usr/local/src/SPTK-3.6
 RUN ./configure --prefix=$SPTKDIR && make && make install && make distclean
 
