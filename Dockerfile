@@ -33,7 +33,6 @@ WORKDIR /usr/local/src/openfst-1.5.2
 RUN ./configure \
     --prefix=/usr/local \
     --with-gnu-ld \
-    --enable-static \
     --enable-bin \
     --enable-compact-fsts \
     --enable-compress \
@@ -44,6 +43,8 @@ RUN ./configure \
     --enable-pdt \
     --enable-python
 RUN make && make install
+RUN make distclean
+RUN echo /usr/local/lib/fst > /etc/ld.so.conf.d/openfst.conf
 RUN ldconfig
 
 # Build and install the Thrax Grammar Development Tools
@@ -54,6 +55,7 @@ RUN ./configure \
     --enable-bin \
     --enable-readline
 RUN make && make install
+RUN make distclean
 RUN ldconfig
 
 # Build and install protobuf (Protocol Buffers)
@@ -62,12 +64,14 @@ RUN git reset --hard ca9bbd71d547a05604e8c2bddda66cdba5abe0c4
 RUN ./autogen.sh
 RUN ./configure --prefix=/usr/local --with-gnu-ld
 RUN make && make install
+RUN make distclean
 RUN ldconfig
 
 # Bulid and install the re2 regular expression package
 WORKDIR /usr/local/src/re2
 RUN git reset --hard 4744450c4880b9445c57d9224495f0e8e29f1c4c
 RUN make && make install
+RUN make distclean
 RUN ldconfig
 
 # Download and prepare Festival & friends
@@ -89,6 +93,7 @@ ENV SPTKDIR /usr/local
 WORKDIR /usr/local/tts/SPTK-3.6
 RUN ./configure --prefix=$SPTKDIR
 RUN make && make install
+RUN make distclean
 
 # Build the Edinburgh Speech Tools
 WORKDIR /usr/local/tts/speech_tools
