@@ -11,7 +11,6 @@ RUN apt-get update && apt-get install -y \
       libreadline-dev \
       libtool \
       make \
-      ncurses-dev \
       pkg-config \
       python \
       python-dev \
