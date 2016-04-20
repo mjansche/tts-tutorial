@@ -31,9 +31,6 @@ RUN curl -L http://openfst.org/twiki/pub/FST/FstDownload/$OPENFST.tar.gz | \
 WORKDIR /usr/local/src/$OPENFST
 RUN ./configure \
       --enable-bin \
-      --enable-compact-fsts \
-      --enable-compress \
-      --enable-const-fsts \
       --enable-far \
       --enable-mpdt \
       --enable-ngram-fsts \
