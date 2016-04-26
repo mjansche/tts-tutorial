@@ -2,10 +2,8 @@ FROM ubuntu:xenial
 MAINTAINER Martin Jansche <mjansche@google.com>
 RUN apt-get update && apt-get install -y \
       autoconf \
-      cpp \
       curl \
       g++ \
-      gcc \
       git \
       libc-dev \
       libreadline-dev \
@@ -15,7 +13,9 @@ RUN apt-get update && apt-get install -y \
       pkg-config \
       python \
       python-dev \
+      python-setuptools \
       unzip \
+      wavpack \
       wget \
       zip \
       zlib1g-dev \
