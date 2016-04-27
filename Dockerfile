@@ -1,7 +1,7 @@
 FROM ubuntu:xenial
 MAINTAINER Martin Jansche <mjansche@google.com>
 RUN apt-get update && apt-get install -y \
-      autoconf \
+      automake \
       curl \
       g++ \
       git \
@@ -65,11 +65,19 @@ RUN git reset --hard ca9bbd71d547a05604e8c2bddda66cdba5abe0c4 && \
       --with-gnu-ld \
     && make && make install && make distclean && ldconfig
 
-# Fetch, build and install the re2 regular expression package
+# Fetch, build, and install the re2 regular expression package
 WORKDIR /usr/local/src
 RUN git clone https://github.com/google/re2.git
 WORKDIR /usr/local/src/re2
 RUN git reset --hard 4744450c4880b9445c57d9224495f0e8e29f1c4c && \
+    make && make install && make distclean && ldconfig
+
+# Fetch, build, and install Sparrowhawk
+WORKDIR /usr/local/src
+RUN git clone https://github.com/google/sparrowhawk.git
+WORKDIR /usr/local/src/sparrowhawk
+RUN git reset --hard 0.1 && \
+    autoreconf && ./configure --prefix=/usr/local --with-gnu-ld && \
     make && make install && make distclean && ldconfig
 
 # Fetch and prepare Festival & friends
