@@ -2,6 +2,7 @@ FROM ubuntu:xenial
 MAINTAINER Martin Jansche <mjansche@google.com>
 RUN apt-get update && apt-get install -y \
       automake \
+      bc \
       curl \
       g++ \
       git \
@@ -21,6 +22,7 @@ RUN apt-get update && apt-get install -y \
       zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
+ENV LC_ALL C.UTF-8
 ENV OPENFST openfst-1.5.2
 ENV THRAX thrax-1.2.2
 
@@ -36,8 +38,6 @@ RUN ./configure \
       --enable-ngram-fsts \
       --enable-pdt \
       --enable-python \
-      --prefix=/usr/local \
-      --with-gnu-ld \
     && make && make install && make distclean && ldconfig
 ENV LD_LIBRARY_PATH /usr/local/lib/fst:$LD_LIBRARY_PATH
 
@@ -49,8 +49,6 @@ WORKDIR /usr/local/src/$THRAX
 RUN ./configure \
       --enable-bin \
       --enable-readline \
-      --prefix=/usr/local \
-      --with-gnu-ld \
     && make && make install && make distclean && ldconfig
 
 # Fetch, build, and install the Protocol Buffers package
@@ -61,8 +59,6 @@ RUN git reset --hard ca9bbd71d547a05604e8c2bddda66cdba5abe0c4 && \
     ./autogen.sh && \
     ./configure \
       --disable-static \
-      --prefix=/usr/local \
-      --with-gnu-ld \
     && make && make install && make distclean && ldconfig
 
 # Fetch, build, and install the re2 regular expression package
@@ -77,7 +73,7 @@ WORKDIR /usr/local/src
 RUN git clone https://github.com/google/sparrowhawk.git
 WORKDIR /usr/local/src/sparrowhawk
 RUN git reset --hard 0.1 && \
-    autoreconf && ./configure --prefix=/usr/local --with-gnu-ld && \
+    autoreconf && ./configure && \
     make && make install && make distclean && ldconfig
 
 # Fetch and prepare Festival & friends
@@ -85,6 +81,12 @@ WORKDIR /usr/local/src
 RUN curl -L http://festvox.org/packed/festival/2.4/festival-2.4-release.tar.gz | \
     tar xz --no-same-owner --no-same-permissions && \
     curl -L http://festvox.org/packed/festival/2.4/speech_tools-2.4-release.tar.gz | \
+    tar xz --no-same-owner --no-same-permissions && \
+    curl -L http://festvox.org/packed/festival/2.4/festlex_CMU.tar.gz | \
+    tar xz --no-same-owner --no-same-permissions && \
+    curl -L http://festvox.org/packed/festival/2.4/festlex_POSLEX.tar.gz | \
+    tar xz --no-same-owner --no-same-permissions && \
+    curl -L http://festvox.org/packed/festival/2.4/voices/festvox_kallpc16k.tar.gz | \
     tar xz --no-same-owner --no-same-permissions && \
     curl -L http://festvox.org/festvox-2.7/festvox-2.7.0-release.tar.gz | \
     tar xz --no-same-owner --no-same-permissions && \
@@ -112,4 +114,4 @@ WORKDIR /usr/local/src/festvox
 RUN ./configure && make
 
 WORKDIR /usr/local/src
-RUN rm -fr $OPENFST $THRAX protobuf re2 SPTK-3.6
+RUN rm -fr $OPENFST $THRAX protobuf re2 sparrowhawk SPTK-3.6
