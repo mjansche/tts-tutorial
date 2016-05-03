@@ -390,7 +390,7 @@ class AstEvaluator : public AstWalker {
     }
 
     // Get the exported FSTs and add them to the map.
-    for (set<IdentifierNode*>::const_iterator fst_i = exported_fsts_.begin();
+    for (std::set<IdentifierNode*>::const_iterator fst_i = exported_fsts_.begin();
          fst_i != exported_fsts_.end(); ++fst_i) {
       const string& name = (*fst_i)->Get();
       // If always_export is set, an imported function, which in turn contains
@@ -815,7 +815,7 @@ class AstEvaluator : public AstWalker {
   // A list of the names of the FSTs we want exported at the end.  We'll find
   // these FSTs from the local environment.  Note that these pointers are owned
   // by the original AST, not us.
-  set<IdentifierNode*> exported_fsts_;
+  std::set<IdentifierNode*> exported_fsts_;
 
   // A list of grammars that we've opened (and thus need to close at the end).
   // TODO(ttai): This is dangerous right now since if we have two simulatneous
@@ -843,7 +843,7 @@ class AstEvaluator : public AstWalker {
 
   // Used in the evaluator to keep track of whether the same function name has
   // been defined in the current file more than once.
-  set<string> observed_function_names_;
+  std::set<string> observed_function_names_;
 
   DISALLOW_COPY_AND_ASSIGN(AstEvaluator<Arc>);
 };

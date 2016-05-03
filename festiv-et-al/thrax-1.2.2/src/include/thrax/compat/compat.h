@@ -30,7 +30,6 @@
 
 using std::deque;
 using std::map;
-using std::set;
 using std::stack;
 using std::istream;
 using std::istringstream;

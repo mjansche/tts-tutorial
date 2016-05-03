@@ -35,8 +35,8 @@ template <typename Arc>
 inline void MakeParensPairVector(
     const fst::VectorFst<Arc>& parens_transducer,
     vector<std::pair<typename Arc::Label, typename Arc::Label> > *parens) {
-  set<typename Arc::Label> seen_labels;
-  typename set<typename Arc::Label>::iterator iter;
+  std::set<typename Arc::Label> seen_labels;
+  typename std::set<typename Arc::Label>::iterator iter;
   for (typename Arc::StateId s = 0; s < parens_transducer.NumStates(); ++s) {
     fst::ArcIterator<fst::VectorFst<Arc> > aiter(parens_transducer, s);
     while (!aiter.Done()) {

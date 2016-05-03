@@ -49,7 +49,7 @@ class Lexer {
     KEYWORD,               // reserved keywords
   };
 
-  static const set<string> kKeywords;
+  static const std::set<string> kKeywords;
 
   // Preprocessing - must be called before the grammar is processed via repeated
   // calls to YYLex().

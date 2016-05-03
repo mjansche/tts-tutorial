@@ -225,7 +225,7 @@ const string RewriteTesterUtils::ProcessInput(const string& input,
   }
 
   vector<std::pair<string, float> > strings;
-  set<string> seen;
+  std::set<string> seen;
   if (succeeded && FstToStrings(output_fst, &strings,
                                 generated_symtab_, type_,
                                 output_symtab_, FLAGS_noutput)) {
@@ -233,7 +233,7 @@ const string RewriteTesterUtils::ProcessInput(const string& input,
       std::sort(strings.begin(), strings.end(), SortOutput);
     vector<std::pair<string, float> >::iterator itr = strings.begin();
     for (; itr != strings.end(); ++itr) {
-      set<string>::iterator sx = seen.find(itr->first);
+      std::set<string>::iterator sx = seen.find(itr->first);
       if (sx != seen.end()) continue;
       if (prepend_output) {
         return_val += "Output string: " + itr->first;

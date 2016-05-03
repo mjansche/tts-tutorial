@@ -22,8 +22,8 @@
 
 namespace thrax {
 
-static set<string> InitStaticKeywords() {
-  set<string> keywords;
+static std::set<string> InitStaticKeywords() {
+  std::set<string> keywords;
   keywords.insert("as");
   keywords.insert("export");
   keywords.insert("func");
@@ -33,7 +33,7 @@ static set<string> InitStaticKeywords() {
   keywords.insert("utf8");
   return keywords;
 }
-const set<string> Lexer::kKeywords = InitStaticKeywords();
+const std::set<string> Lexer::kKeywords = InitStaticKeywords();
 
 Lexer::TokenClass Lexer::YYLex() {
   int begin_pos = GetPos();
