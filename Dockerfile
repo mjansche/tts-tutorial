@@ -1,5 +1,8 @@
 FROM ubuntu:xenial
 MAINTAINER Martin Jansche <mjansche@google.com>
+
+COPY festiv-et-al /usr/local/src/
+
 RUN apt-get update && apt-get install -y \
       automake \
       bc \
@@ -11,6 +14,7 @@ RUN apt-get update && apt-get install -y \
       libtool \
       make \
       ncurses-dev \
+      nvi \
       pkg-config \
       python \
       python-dev \
@@ -41,10 +45,7 @@ RUN ./configure \
     && make && make install && make distclean && ldconfig
 ENV LD_LIBRARY_PATH /usr/local/lib/fst:$LD_LIBRARY_PATH
 
-# Fetch, build, and install the Thrax Grammar Development Tools
-WORKDIR /usr/local/src
-RUN curl -L http://openfst.org/twiki/pub/GRM/ThraxDownload/$THRAX.tar.gz | \
-    tar xz --no-same-owner --no-same-permissions
+# Build and install the Thrax Grammar Development Tools
 WORKDIR /usr/local/src/$THRAX
 RUN ./configure \
       --enable-bin \
@@ -68,21 +69,14 @@ WORKDIR /usr/local/src/re2
 RUN git reset --hard 4744450c4880b9445c57d9224495f0e8e29f1c4c && \
     make && make install && make distclean && ldconfig
 
-# Fetch, build, and install Sparrowhawk
-WORKDIR /usr/local/src
-RUN git clone https://github.com/google/sparrowhawk.git
+# Build and install Sparrowhawk
 WORKDIR /usr/local/src/sparrowhawk
-RUN git reset --hard 0.1 && \
-    autoreconf && ./configure && \
+RUN autoreconf && ./configure && \
     make && make install && make distclean && ldconfig
 
 # Fetch and prepare Festival & friends
 WORKDIR /usr/local/src
-RUN curl -L http://festvox.org/packed/festival/2.4/festival-2.4-release.tar.gz | \
-    tar xz --no-same-owner --no-same-permissions && \
-    curl -L http://festvox.org/packed/festival/2.4/speech_tools-2.4-release.tar.gz | \
-    tar xz --no-same-owner --no-same-permissions && \
-    curl -L http://festvox.org/packed/festival/2.4/festlex_CMU.tar.gz | \
+RUN curl -L http://festvox.org/packed/festival/2.4/festlex_CMU.tar.gz | \
     tar xz --no-same-owner --no-same-permissions && \
     curl -L http://festvox.org/packed/festival/2.4/festlex_POSLEX.tar.gz | \
     tar xz --no-same-owner --no-same-permissions && \
