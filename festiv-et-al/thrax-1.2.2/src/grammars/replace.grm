@@ -1,0 +1,42 @@
+import 'byte.grm' as b;
+import 'numbers.grm' as n;
+
+# To test this grammar one can use thraxrewrite-tester, e.g., as follows:
+#
+# $ thraxrewrite-tester --far=replace.far --rules=MEASURE
+#
+# Input: 234 kg
+
+replacement_sequence = "[ROOT][NUMBER][MEASURE]";
+
+singular_measures =
+   ("ft" : "foot")
+ | ("in" : "inch")
+ | ("cm" : "centimeter")
+ | ("m" : "meter")
+ | ("kg" : "kilogram")
+;
+
+plural_measures =
+   ("ft" : "feet")
+ | ("in" : "inches")
+ | ("cm" : "centimeters")
+ | ("m" : "meters")
+ | ("kg" : "kilograms")
+;
+
+export MEASURE = Optimize[
+  Replace[replacement_sequence,
+	  # This corresponds to "[ROOT]" in the replacement sequence. Think of
+	  # it as the skeleton onto which the flesh will be attached.
+	  "[NUMBER] [MEASURE]",
+	  # This is a definition of singular numbers: it is the flesh associated
+	  # with [NUMBER].
+	  "1" @ n.NUMBERS,
+	  # This is the flesh associated with [MEASURE].
+	  singular_measures]
+| Replace[replacement_sequence,
+	  "[NUMBER] [MEASURE]",
+	  (b.kDigit* - "1") @ n.NUMBERS,
+	  plural_measures]]
+;

@@ -1,0 +1,60 @@
+Thrax - Release 0.1
+
+This is the alpha version.
+
+Thrax - Release 1.0
+
+* Removed dependency on ICU for UTF8 string parsing: --with-icu configuration
+  flag no longer needed and OpenFst library version 1.3.1 or above is required. 
+* Function definitions may now be interleaved with the rest of the body in grammars.
+* Support for standard (tropical), log and log64 arc types (flag --arc_type).
+* --save_symbols flag to thraxcompiler allows for symbol tables to be stored in the compiled fsts.
+  thraxmakedep supports --arc_type and --save_symbols flags.
+* StringFile function now supports construction of both acceptors and
+  transducers. Strings may be compiled in byte or utf8 mode, or with a
+  user-specified symbol table. 
+* The --rule flag to thraxrewrite-tester is now --rules. Supports a
+  comma-separated list of rule names, which are to applied in sequence to the
+  input. 
+* Project added as callable function.
+* Various optimizations to CDRewrite and elsewhere.
+* Fixed bug in how symbol tables are saved (1.0.1)
+* Fixed bug in treatment of symbol tables with StringFile
+* Adopted SET_FLAGS for better presentation of flag options
+
+Thrax - Release 1.1
+
+* Added interface to pushdown transducer (PDT) functionality from OpenFst.
+* Added support for morphological paradigms and linguistic features.
+* Added assertion capability to allow for self-testing grammars.
+* Added readline support to thraxrewrite-tester to allow for inline editing and saving
+  of histories.
+* Added thraxrandom-generator to allow one to generate random strings from a
+  grammar.
+* Added more useful debug information --- grammar file name and line number ---
+  to allow more one to find bugs in the grammar more easily.
+* Generated labels are now output in readable form by thraxrewrite-tester and
+  thraxrandom-generator.
+* Generated labels (enclosed in "[]") may no longer be single-character.
+* Allow ASSERT_EQUAL declarations in the grammar.
+
+
+Thrax - Release 1.2
+
+* Added interface to multi-pushdown transducer (MPDT) functionality from OpenFst.
+* Added interface to Replace class in OpenFst.
+* Adds --show_details flag to thraxrewrite-tester. When it is set and when
+  multiple rules  are specified, the tool will show the output of each
+  individual rule. Useful when trying to find which rule caused a problem.
+* Raises a warning if more than one definition is given for a function.
+
+Thrax - Release 1.2.1
+* AssertNull and AssertEmpty assertions added.
+* Minor fixes to use fully qualified names for std:: objects.
+* Rearrangement of the main compiler to have separate C++ files for each arc type.
+* Fixes potential bug in Replace implementation.
+* Algorithmic improvements to Optimize.
+
+Thrax - Release 1.2.2
+
+* Compatibility release for OpenFst 1.5.2.

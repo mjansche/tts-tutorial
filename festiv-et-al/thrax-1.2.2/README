@@ -1,0 +1,51 @@
+Thrax - Release 1.2.2
+
+Thrax is a toolkit for compiling grammars based on regular expressions and
+context-dependent rewrite rules into weighted finite-state transducers
+(FSTs). The FST representation uses OpenFst.
+
+REQUIREMENTS:
+  This version is known to work under Linux and MacOS using g++ (>=
+  4.2). Expected to work wherever adequate POSIX (dlopen, ssize_t, basename),
+  c99 (snprintf, strtoll, <stdint.h>), and C++11 with GNU extensions are
+  available.
+
+  It is assumed you have OpenFst (www.openfst.org) 1.5.2 or higher and have
+  installed it.
+
+  MAKE SURE YOU CONFIGURE OpenFst WITH THE --enable-far, --enable-pdt AND
+  --enable-mpdt FLAGS.
+
+INSTALLATION:
+  Follow the generic GNU build system instructions in ./INSTALL.  We
+  recommend configuring with =--enable-static=no= for faster
+  compiles.
+
+  Configuring with --enable-bin=no excludes the command line utilities (not
+  generally useful).
+
+  Configuring with --enable-readline enables readline (in-line editing) for
+  thraxrewrite-tester. You must have GNU readline installed.
+
+  Compiling with '-Wall -Wno-sign-compare' under g++ should give no
+  warnings from this library.
+
+USAGE:
+  Assuming you've installed under the default /usr/local, the GRM binaries are
+  found on /usr/local/bin. Headers will be in /usr/local/include/thrax, and
+  libraries in /usr/local/lib.
+
+  Auxiliary data files -- provided grammars -- are under /usr/local/share/thrax.
+  Syntax highlighters (for vi and emacs) and other useful tools are under
+  /usr/local/share/utils.
+
+  To use in your own programs you will need to include <thrax/thrax.h>. Compile
+  with '-I /usr/local/include' and link against /usr/local/lib/libfst.so,
+  /usr/local/lib/fst/libfstfar.so and /usr/local/lib/libthrax.so
+
+  The linking is, by default, dynamic so that the Fst and Arc type DSO
+  extensions can be used correctly if desired.
+
+DOCUMENTATION:
+  See www.opengrm.org for general documentation.
+  See ./NEWS for updates since the last release.
