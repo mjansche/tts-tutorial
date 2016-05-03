@@ -26,6 +26,7 @@
 #ifndef SPARROWHAWK_NORMALIZER_H_
 #define SPARROWHAWK_NORMALIZER_H_
 
+#include <set>
 #include <string>
 using std::string;
 #include <vector>
@@ -138,7 +139,7 @@ class Normalizer {
   std::unique_ptr<RuleSystem> tokenizer_classifier_rules_;
   std::unique_ptr<RuleSystem> verbalizer_rules_;
   std::unique_ptr<SentenceBoundary> sentence_boundary_;
-  set<string> sentence_boundary_exceptions_;
+  std::set<string> sentence_boundary_exceptions_;
 
   DISALLOW_COPY_AND_ASSIGN(Normalizer);
 };
