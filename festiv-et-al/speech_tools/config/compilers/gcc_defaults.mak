@@ -39,16 +39,13 @@
  ###########################################################################
 
 CC=gcc
-CXX=gcc
-ifeq ($(OSTYPE),Darwin)
-CXX=g++
-endif
+CXX=g++ -std=c++11
 
 COMPILER_DESC=FSF gcc
 COMPILER_VERSION_COMMAND=$(CXX) -v 2>&1 | tail -1 | sed -e 's/^....//'
 
 CFLAGS  = $(GCC_SYSTEM_OPTIONS) $(CC_OTHER_FLAGS)
-CXXFLAGS  =  $(GCC_SYSTEM_OPTIONS) -fno-implicit-templates $(CC_OTHER_FLAGS)
+CXXFLAGS  =  $(GCC_SYSTEM_OPTIONS) $(CC_OTHER_FLAGS)
 
 DEBUG_CCFLAGS   = -g
 DEBUG_CXXFLAGS  = -g
@@ -103,7 +100,7 @@ COMPILERLIBS= $(COMPILER_LIBS_DIR:%=-L%) -lstdc++
 ## special ways of doing things, blank means default
 
 MAKE_DEPEND_C = $(CC) -MM $(INCLUDES) $(TEMPLATES) $(TEMPLATE_SPECIFIC)
-MAKE_DEPEND_CXX = $(CC) -MM $(INCLUDES) $(TEMPLATES) $(TEMPLATE_SPECIFIC)
+MAKE_DEPEND_CXX = $(CXX) -MM $(INCLUDES) $(TEMPLATES) $(TEMPLATE_SPECIFIC)
 BUILD_LIB   = $(AR) cruv
 INDEX_LIB   = $(RANLIB)
 
