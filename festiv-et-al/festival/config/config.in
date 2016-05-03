@@ -37,6 +37,11 @@ FESTIVAL_HOME := $(shell (cd $(TOP); pwd))
 ## others may want it too.
 # INCLUDE_TCL=1
 
+## Support for Sparrowhawk Text normalisation
+## If you have sparrowhawk and a suitably configured voice you can switch on here
+INCLUDE_MODULES += Sparrowhawk
+FST_LIB = /usr/local/lib
+
 ###########################################################################
 ## Take most settings from speech tools.
 

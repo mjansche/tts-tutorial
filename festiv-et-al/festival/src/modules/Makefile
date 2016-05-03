@@ -39,7 +39,7 @@ TOP=../..
 DIRNAME=src/modules
 CPPSRCS = 
 BASE_DIRS = Lexicon base Duration Intonation Text \
-            UniSyn donovan parser UniSyn_diphone
+            UniSyn donovan parser UniSyn_diphone Sparrowhawk
 # these last four are potentially optional
 
 LIB_BUILD_DIRS = $(BASE_DIRS)
