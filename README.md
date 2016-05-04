@@ -39,7 +39,7 @@ voice:
 
 ```
 echo Hello world |
-docker run --rm -i mjansche/tts-tutorial-sltu2016 /usr/local/src/festival/bin/text2wave \
+docker run --rm -i mjansche/tts-tutorial-sltu2016 festival/bin/text2wave \
   > hello.wav
 ```
 
@@ -47,7 +47,7 @@ On many versions of GNU/Linux, the following also works:
 
 ```
 echo Hello world |
-docker run --rm -i mjansche/tts-tutorial-2016 /usr/local/src/festival/bin/text2wave |
+docker run --rm -i mjansche/tts-tutorial-sltu2016 festival/bin/text2wave |
 aplay
 ```
 
