@@ -1,7 +1,7 @@
 FROM ubuntu:xenial
 MAINTAINER Martin Jansche <mjansche@google.com>
 
-COPY festiv-et-al /usr/local/src/
+COPY usr_local /usr/local/
 
 RUN apt-get update && apt-get install -y \
       automake \
