@@ -25,8 +25,8 @@ software:
 
 To use this Docker image, you need to have a working version of Docker; on
 Windows and Mac OS you will also need a way to run a Linux kernel in a virtual
-machine. Visit [docker.com](https://www.docker.com/) and follow their Getting
-Started instructions on how to set up Docker.
+machine. Visit [docs.docker.com](https://docs.docker.com/) and follow the "Get
+Started" instructions for your platform.
 
 Minimally you want to be able to run the official Ubuntu image, like this:
 
