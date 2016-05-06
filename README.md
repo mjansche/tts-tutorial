@@ -17,6 +17,7 @@ software:
 * [SPTK](http://sp-tk.sourceforge.net/) 3.6
 * [OpenFst](http://openfst.org/) 1.5.2
 * [Thrax](http://www.opengrm.org/Thrax) 1.2.2
+* [Pynini](http://opengrm.org/Pynini) 0.9
 * [Sparrowhawk](https://github.com/google/sparrowhawk) 0.1
 * [Protocol Buffers](https://github.com/google/protobuf)
 * [RE2](https://github.com/google/re2)

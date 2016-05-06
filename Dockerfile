@@ -1,7 +1,7 @@
 FROM ubuntu:xenial
 MAINTAINER Martin Jansche <mjansche@google.com>
 
-COPY usr_local /usr/local/
+#ADD goog_af_unison_wav_22k.tar /usr/local/src/
 
 RUN apt-get update && apt-get install -y \
       automake \
@@ -30,28 +30,6 @@ ENV LC_ALL C.UTF-8
 ENV OPENFST openfst-1.5.2
 ENV THRAX thrax-1.2.2
 
-# Fetch, build, and install the OpenFst Library
-WORKDIR /usr/local/src
-RUN curl -L http://openfst.org/twiki/pub/FST/FstDownload/$OPENFST.tar.gz | \
-    tar xz --no-same-owner --no-same-permissions
-WORKDIR /usr/local/src/$OPENFST
-RUN ./configure \
-      --enable-bin \
-      --enable-far \
-      --enable-mpdt \
-      --enable-ngram-fsts \
-      --enable-pdt \
-      --enable-python \
-    && make && make install && make distclean && ldconfig
-ENV LD_LIBRARY_PATH /usr/local/lib/fst:$LD_LIBRARY_PATH
-
-# Build and install the Thrax Grammar Development Tools
-WORKDIR /usr/local/src/$THRAX
-RUN ./configure \
-      --enable-bin \
-      --enable-readline \
-    && make && make install && make distclean && ldconfig
-
 # Fetch, build, and install the Protocol Buffers package
 WORKDIR /usr/local/src
 RUN git clone https://github.com/google/protobuf.git
@@ -68,6 +46,37 @@ RUN git clone https://github.com/google/re2.git
 WORKDIR /usr/local/src/re2
 RUN git reset --hard 4744450c4880b9445c57d9224495f0e8e29f1c4c && \
     make && make install && make distclean && ldconfig
+
+# Fetch, build, and install the OpenFst Library
+WORKDIR /usr/local/src
+RUN curl -L http://openfst.org/twiki/pub/FST/FstDownload/$OPENFST.tar.gz | \
+    tar xz --no-same-owner --no-same-permissions
+WORKDIR /usr/local/src/$OPENFST
+RUN ./configure \
+      --enable-bin \
+      --enable-far \
+      --enable-mpdt \
+      --enable-ngram-fsts \
+      --enable-pdt \
+      --enable-python \
+    && make && make install && make distclean && ldconfig
+ENV LD_LIBRARY_PATH /usr/local/lib/fst:$LD_LIBRARY_PATH
+
+# Fetch, build, and install Pynini
+WORKDIR /usr/local/src
+RUN curl -L http://openfst.org/twiki/pub/GRM/PyniniDownload/pynini-0.9.tar.gz | \
+    tar xz --no-same-owner --no-same-permissions
+WORKDIR /usr/local/src/pynini-0.9
+RUN python setup.py install && python setup.py test
+
+COPY usr_local /usr/local/
+
+# Build and install the Thrax Grammar Development Tools
+WORKDIR /usr/local/src/$THRAX
+RUN ./configure \
+      --enable-bin \
+      --enable-readline \
+    && make && make install && make distclean && ldconfig
 
 # Build and install Sparrowhawk
 WORKDIR /usr/local/src/sparrowhawk
@@ -108,4 +117,4 @@ WORKDIR /usr/local/src/festvox
 RUN ./configure && make
 
 WORKDIR /usr/local/src
-RUN rm -fr $OPENFST $THRAX protobuf re2 sparrowhawk SPTK-3.6
+RUN rm -fr protobuf re2 $OPENFST pynini-0.9 $THRAX sparrowhawk SPTK-3.6
