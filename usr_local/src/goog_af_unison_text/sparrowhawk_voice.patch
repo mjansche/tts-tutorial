@@ -1,0 +1,40 @@
+From b26d6f724b684328f9b00dff4dcae6a8018b7a47 Mon Sep 17 00:00:00 2001
+From: root <root@localhost>
+Date: Fri, 6 May 2016 17:10:02 +0000
+Subject: [PATCH] Use Sparrowhawk for text normalization.
+
+---
+ festvox/goog_af_unison_cg.scm | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/festvox/goog_af_unison_cg.scm b/festvox/goog_af_unison_cg.scm
+index 89b3c9b..7a2a6df 100644
+--- a/festvox/goog_af_unison_cg.scm
++++ b/festvox/goog_af_unison_cg.scm
+@@ -35,6 +35,9 @@
+ ;;;                                                                      ;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ 
++(defvar sparrowhawk_prefix "/usr/local/share/sparrowhawk/af/")
++(defvar sparrowhawk_config_file "sparrowhawk_configuration.ascii_proto")
++
+ ;;; Try to find the directory where the voice is, this may be from
+ ;;; .../festival/lib/voices/ or from the current directory
+ (if (assoc 'goog_af_unison_cg voice-locations)
+@@ -411,6 +414,13 @@ Define voice for af."
+   ;; Select appropriate tokenization
+   (goog_af_unison::select_tokenizer)
+ 
++  ;; Use Sparrowhawk for text normalization
++  (set! token_pos_cart_trees nil)
++  (Parameter.set 'Token_Method Sparrowhawk_normalize)
++  (sparrowhawk.init 'goog_af_unison_cg
++                     sparrowhawk_config_file
++                     sparrowhawk_prefix)
++
+   ;; For part of speech tagging
+   (goog_af_unison::select_tagger)
+ 
+-- 
+2.7.4
+
