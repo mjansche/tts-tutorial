@@ -1,0 +1,127 @@
+## Licensed under the Apache License, Version 2.0 (the "License");
+## you may not use this file except in compliance with the License.
+## You may obtain a copy of the License at
+##
+##     http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing, software
+## distributed under the License is distributed on an "AS IS" BASIS,
+## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+## See the License for the specific language governing permissions and
+## limitations under the License.
+##
+## Copyright 2015 and onwards Google, Inc.
+
+# Expansion of digit sequences into sums of products of powers of
+# ten, tuned for Western languages where the M's are 10^3, 10^6 ...
+# This grammar goes up to 10^15
+#
+# Based on concepts from:
+#
+# J. Hurford, 1975, The Linguistic Theory of Numerals, Cambridge
+
+import 'byte.grm' as b;
+
+func Cond[c, t1, t2, sigma_star] {
+  inside = Optimize[sigma_star - c];
+  composed = inside @ t2;
+  return Optimize[c @ t1 | composed];
+}
+
+nonMs = "[E2]" | "[E1]";
+
+Ms = "[E15]" | "[E12]" | "[E9]" | "[E6]" | "[E3]";
+
+powers = Optimize[Ms | nonMs];
+
+digit_factorization =
+ Optimize[
+ (((((((((((((((((
+  b.kDigit ("" : "[E2]"))?
+   b.kDigit ("" : "[E1]"))?
+    b.kDigit ("" : "[E15]"))?
+  b.kDigit ("" : "[E2]"))?
+   b.kDigit ("" : "[E1]"))?
+    b.kDigit ("" : "[E12]"))?
+     b.kDigit ("" : "[E2]"))?
+      b.kDigit ("" : "[E1]"))?
+  b.kDigit ("" : "[E9]"))?
+   b.kDigit ("" : "[E2]"))?
+    b.kDigit ("" : "[E1]"))?
+     b.kDigit ("" : "[E6]"))?
+      b.kDigit ("" : "[E2]"))?
+       b.kDigit ("" : "[E1]"))?
+        b.kDigit ("" : "[E3]"))?
+         b.kDigit ("" : "[E2]"))?
+     b.kDigit ("" : "[E1]"))?
+ b.kDigit
+ ];
+
+export SIGMA_STAR = Optimize[(b.kBytes | powers | "[AND]" | "[tens_marker]")*];
+
+zeroedit1 = CDRewrite["0" nonMs : "", "", "", SIGMA_STAR];
+
+zeroedit2 = CDRewrite["0" : "", "", Ms, SIGMA_STAR];
+
+d1to9 = b.kBytes - "0";
+
+zeroedit = Optimize[(zeroedit1 @ zeroedit2) (d1to9 | ("0" : ""))];
+
+multi_m_edit = CDRewrite[Ms : "", Ms, "", SIGMA_STAR];
+
+factorization = Optimize[digit_factorization @ zeroedit @ multi_m_edit];
+
+export WESTERN_FACTORIZATION = Cond["0", "0", factorization, SIGMA_STAR];
+
+## Performs the flip necessary to map from "forty five" to "five and forty"
+
+d2to9 = d1to9 - "1";
+and_insertion = CDRewrite[
+  "" : "[AND]", "", d2to9 "[E1]" d1to9, SIGMA_STAR
+];
+insert_1 = CDRewrite[ "" : "1", "", "[AND]" d2to9 "[E1]" "1", SIGMA_STAR];
+insert_2 = CDRewrite[ "" : "2", "", "[AND]" d2to9 "[E1]" "2", SIGMA_STAR];
+insert_3 = CDRewrite[ "" : "3", "", "[AND]" d2to9 "[E1]" "3", SIGMA_STAR];
+insert_4 = CDRewrite[ "" : "4", "", "[AND]" d2to9 "[E1]" "4", SIGMA_STAR];
+insert_5 = CDRewrite[ "" : "5", "", "[AND]" d2to9 "[E1]" "5", SIGMA_STAR];
+insert_6 = CDRewrite[ "" : "6", "", "[AND]" d2to9 "[E1]" "6", SIGMA_STAR];
+insert_7 = CDRewrite[ "" : "7", "", "[AND]" d2to9 "[E1]" "7", SIGMA_STAR];
+insert_8 = CDRewrite[ "" : "8", "", "[AND]" d2to9 "[E1]" "8", SIGMA_STAR];
+insert_9 = CDRewrite[ "" : "9", "", "[AND]" d2to9 "[E1]" "9", SIGMA_STAR];
+delete_post_decade_digit = CDRewrite[
+  d1to9 : "", d2to9 "[E1]" , "", SIGMA_STAR
+];
+
+export GERMANIC_DECADE_FLOP = Optimize[
+    and_insertion
+  @ insert_1
+  @ insert_2
+  @ insert_3
+  @ insert_4
+  @ insert_5
+  @ insert_6
+  @ insert_7
+  @ insert_8
+  @ insert_9
+  @ delete_post_decade_digit];
+
+## Ways of delimiting thousands
+
+export NO_DELIMITER = Optimize["0" | (d1to9 b.kDigit*)];
+
+killcomma = "," : "";
+
+dot2comma = "." : ",";
+
+spaces2comma = " "+ : ",";
+
+export COMMA_THOUSANDS =
+  Optimize["0" | (d1to9 b.kDigit{0,2} (killcomma b.kDigit{3})*)];
+
+delim_map_dot = (b.kDigit | dot2comma)*;
+
+export DOT_THOUSANDS = Optimize[delim_map_dot @ COMMA_THOUSANDS];
+
+delim_map_space = (b.kDigit | spaces2comma)*;
+
+export SPACE_THOUSANDS = Optimize[delim_map_space @ COMMA_THOUSANDS];

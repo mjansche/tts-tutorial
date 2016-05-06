@@ -1,0 +1,125 @@
+# Copyright 2010 Google Inc. All Rights Reserved.
+# Author: rws@google.com (Richard Sproat)
+#
+# Unit test for Afrikaans number names.
+
+CARDINAL_NUMBER_NAME	0	nul
+CARDINAL_NUMBER_NAME	1	een
+CARDINAL_NUMBER_NAME	2	twee
+CARDINAL_NUMBER_NAME	3	drie
+CARDINAL_NUMBER_NAME	4	vier
+CARDINAL_NUMBER_NAME	5	vyf
+CARDINAL_NUMBER_NAME	6	ses
+CARDINAL_NUMBER_NAME	7	sewe
+CARDINAL_NUMBER_NAME	8	agt
+CARDINAL_NUMBER_NAME	9	nege
+CARDINAL_NUMBER_NAME	10	tien
+CARDINAL_NUMBER_NAME	11	elf
+CARDINAL_NUMBER_NAME	12	twaalf
+CARDINAL_NUMBER_NAME	13	dertien
+CARDINAL_NUMBER_NAME	14	veertien
+CARDINAL_NUMBER_NAME	15	vyftien
+CARDINAL_NUMBER_NAME	16	sestien
+CARDINAL_NUMBER_NAME	17	sewentien
+CARDINAL_NUMBER_NAME	18	agtien
+CARDINAL_NUMBER_NAME	19	negentien
+CARDINAL_NUMBER_NAME	20	twintig
+CARDINAL_NUMBER_NAME	21	een en twintig
+CARDINAL_NUMBER_NAME	32	twee en dertig
+CARDINAL_NUMBER_NAME	43	drie en veertig
+CARDINAL_NUMBER_NAME	54	vier en vyftig
+CARDINAL_NUMBER_NAME	65	vyf en sestig
+CARDINAL_NUMBER_NAME	76	ses en sewentig
+CARDINAL_NUMBER_NAME	87	sewe en tagtig
+CARDINAL_NUMBER_NAME	98	agt en negentig
+CARDINAL_NUMBER_NAME	100	honderd
+CARDINAL_NUMBER_NAME	101	honderd en een
+CARDINAL_NUMBER_NAME	102	honderd en twee
+CARDINAL_NUMBER_NAME	110	honderd en tien
+CARDINAL_NUMBER_NAME	112	honderd en twaalf
+CARDINAL_NUMBER_NAME	120	honderd en twintig
+CARDINAL_NUMBER_NAME	128	honderd agt en twintig
+CARDINAL_NUMBER_NAME	1000	een duisend
+CARDINAL_NUMBER_NAME	10000	tien duisend
+CARDINAL_NUMBER_NAME	12000	twaalf duisend
+CARDINAL_NUMBER_NAME	21000	een en twintig duisend
+CARDINAL_NUMBER_NAME	100000	honderd duisend
+CARDINAL_NUMBER_NAME	100100	honderd duisend honderd
+CARDINAL_NUMBER_NAME	101000	honderd en een duisend
+CARDINAL_NUMBER_NAME	1000000	een miljoen
+CARDINAL_NUMBER_NAME	1000001	een miljoen en een
+CARDINAL_NUMBER_NAME	2000000	twee miljoen
+CARDINAL_NUMBER_NAME	10000000	tien miljoen
+CARDINAL_NUMBER_NAME	900000000	nege honderd miljoen
+CARDINAL_NUMBER_NAME	901000000	nege honderd en een miljoen
+CARDINAL_NUMBER_NAME	987654321	nege honderd sewe en tagtig miljoen ses honderd vier en vyftig duisend drie honderd een en twintig
+CARDINAL_NUMBER_NAME	1000000000	een miljard
+CARDINAL_NUMBER_NAME	2000000000	twee miljard
+CARDINAL_NUMBER_NAME	9876543291	nege miljard agt honderd ses en sewentig miljoen vyf honderd drie en veertig duisend twee honderd een en negentig
+CARDINAL_NUMBER_NAME	10000000000	tien miljard
+CARDINAL_NUMBER_NAME	100000000000	honderd miljard
+CARDINAL_NUMBER_NAME	100000000001	honderd miljard en een
+CARDINAL_NUMBER_NAME	101000000000	honderd en een miljard
+CARDINAL_NUMBER_NAME	102000000000	honderd en twee miljard
+
+ORDINAL_NUMBER_NAME	0e	nulste
+ORDINAL_NUMBER_NAME	1e	eerste
+ORDINAL_NUMBER_NAME	2e	tweede
+ORDINAL_NUMBER_NAME	3e	derde
+ORDINAL_NUMBER_NAME	4e	vierde
+ORDINAL_NUMBER_NAME	5e	vyfde
+ORDINAL_NUMBER_NAME	6e	sesde
+ORDINAL_NUMBER_NAME	7e	sewende
+ORDINAL_NUMBER_NAME	8e	agtste
+ORDINAL_NUMBER_NAME	9e	negende
+ORDINAL_NUMBER_NAME	10e	tiende
+ORDINAL_NUMBER_NAME	11e	elfde
+ORDINAL_NUMBER_NAME	12e	twaalfde
+ORDINAL_NUMBER_NAME	13e	dertiende
+ORDINAL_NUMBER_NAME	14e	veertiende
+ORDINAL_NUMBER_NAME	15e	vyftiende
+ORDINAL_NUMBER_NAME	16e	sestiende
+ORDINAL_NUMBER_NAME	17e	sewentiende
+ORDINAL_NUMBER_NAME	18e	agtiende
+ORDINAL_NUMBER_NAME	19e	negentiende
+ORDINAL_NUMBER_NAME	20e	twintigste
+ORDINAL_NUMBER_NAME	21e	een en twintigste
+ORDINAL_NUMBER_NAME	32e	twee en dertigste
+ORDINAL_NUMBER_NAME	43e	drie en veertigste
+ORDINAL_NUMBER_NAME	54e	vier en vyftigste
+ORDINAL_NUMBER_NAME	65e	vyf en sestigste
+ORDINAL_NUMBER_NAME	76e	ses en sewentigste
+ORDINAL_NUMBER_NAME	87e	sewe en tagtigste
+ORDINAL_NUMBER_NAME	98e	agt en negentigste
+ORDINAL_NUMBER_NAME	100e	honderdste
+ORDINAL_NUMBER_NAME	1000e	een duisendste
+ORDINAL_NUMBER_NAME	1000000e	een miljoenste
+ORDINAL_NUMBER_NAME	1000001e	een miljoen en eerste
+ORDINAL_NUMBER_NAME	1100000e	een miljoen honderd duisendste
+ORDINAL_NUMBER_NAME	2000001e	twee miljoen en eerste
+ORDINAL_NUMBER_NAME	1001000e	een miljoen een duisendste
+ORDINAL_NUMBER_NAME	1001000000e	een miljard een miljoenste
+ORDINAL_NUMBER_NAME	1001001000e	een miljard een miljoen een duisendste
+
+# Test the various ways of delimiting thousands
+
+CARDINAL_NUMBER_NAME	21.000	een en twintig duisend
+CARDINAL_NUMBER_NAME	100.000	honderd duisend
+CARDINAL_NUMBER_NAME	1.000.000	een miljoen
+CARDINAL_NUMBER_NAME	2.000.000	twee miljoen
+CARDINAL_NUMBER_NAME	21 000	een en twintig duisend
+CARDINAL_NUMBER_NAME	100 000	honderd duisend
+CARDINAL_NUMBER_NAME	1 000 000	een miljoen
+CARDINAL_NUMBER_NAME	2 000 000	twee miljoen
+
+## Test auxiliary targets
+
+SINGLE_DIGIT	1	een
+SINGLE_DIGIT	9	nege
+MINUS	-	minus
+COMMA	,	komma
+SPELLED_NUMBERS	miljoen	miljoen
+
+ORDINAL_NUMBER_NAME_WITHOUT_OVERT_MARKING	1	eerste
+ORDINAL_NUMBER_NAME_WITHOUT_OVERT_MARKING	10	tiende
+ORDINAL_NUMBER_NAME_WITHOUT_OVERT_MARKING	12	twaalfde

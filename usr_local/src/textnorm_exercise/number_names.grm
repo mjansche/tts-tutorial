@@ -1,0 +1,252 @@
+## Licensed under the Apache License, Version 2.0 (the "License");
+## you may not use this file except in compliance with the License.
+## You may obtain a copy of the License at
+##
+##     http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing, software
+## distributed under the License is distributed on an "AS IS" BASIS,
+## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+## See the License for the specific language governing permissions and
+## limitations under the License.
+##
+## Copyright 2015 and onwards Google, Inc.
+
+################################################################################
+# AFRIKAANS NUMBER NAMES.
+################################################################################
+
+import 'byte.grm' as b;
+import 'factorization.grm' as f;
+
+################################################################################
+
+# Universal alphabet, used in CDRewrite rules
+sigma_star = f.SIGMA_STAR;
+
+# Deletes expression
+func D[expr] {
+   return expr : "";
+}
+
+# Inserts expression
+func I[expr] {
+   return "" : expr;
+}
+
+# Fix overgeneration of 11-19 as "ten one" etc. by marking "ten" with a tens
+# marker just in case it is not followed by a digit.
+ins_tens_marker = CDRewrite[I["[tens_marker]"], "1[E1]", "", sigma_star];
+
+del_tens_marker = CDRewrite[D["[tens_marker]"], "", b.kDigit - "0", sigma_star];
+
+mark_tens = Optimize[ins_tens_marker @ del_tens_marker];
+
+big = "duisend" | "miljoen" | "miljard";
+
+remove_one_before_100 =
+  CDRewrite[D["een "], "[BOS]" | (big " "), "honderd", sigma_star]
+;
+
+## Basic cardinal number vocabulary. We use "#" before number words from 1-90 to
+## mark the position for "and" insertion.
+
+cardinal_vocabulary =
+    ("0" : "nul")
+  | ("1" : "#een")
+  | ("2" : "#twee")
+  | ("3" : "#drie")
+  | ("4" : "#vier")
+  | ("5" : "#vyf")
+  | ("6" : "#ses")
+  | ("7" : "#sewe")
+  | ("8" : "#agt")
+  | ("9" : "#nege")
+  | ("1[E1][tens_marker]" : "#tien")
+  | ("1[E1]1" : "#elf")
+  | ("1[E1]2" : "#twaalf")
+  | ("1[E1]3" : "#dertien")
+  | ("1[E1]4" : "#veertien")
+  | ("1[E1]5" : "#vyftien")
+  | ("1[E1]6" : "#sestien")
+  | ("1[E1]7" : "#sewentien")
+  | ("1[E1]8" : "#agtien")
+  | ("1[E1]9" : "#negentien")
+  | ("2[E1]" : "#twintig")
+  | ("3[E1]" : "#dertig")
+  | ("4[E1]" : "#veertig")
+  | ("5[E1]" : "#vyftig")
+  | ("6[E1]" : "#sestig")
+  | ("7[E1]" : "#sewentig")
+  | ("8[E1]" : "#tagtig")
+  | ("9[E1]" : "#negentig")
+  | ("[E2]" : "honderd")
+  | ("[E3]" : "duisend")
+  | ("[E6]" : "miljoen")
+  | ("[E9]" : "miljard")
+  | ("[AND]" : "en")
+;
+
+## Basic ordinal number vocabulary.
+
+ordinal_vocabulary =
+    ("0" : "nulste")
+  | ("1" : "#eerste")
+  | ("2" : "#tweede")
+  | ("3" : "#derde")
+  | ("4" : "#vierde")
+  | ("5" : "#vyfde")
+  | ("6" : "#sesde")
+  | ("7" : "#sewende")
+  | ("8" : "#agtste")
+  | ("9" : "#negende")
+  | ("1[E1][tens_marker]" : "#tiende")
+  | ("1[E1]1" : "#elfde")
+  | ("1[E1]2" : "#twaalfde")
+  | ("1[E1]3" : "#dertiende")
+  | ("1[E1]4" : "#veertiende")
+  | ("1[E1]5" : "#vyftiende")
+  | ("1[E1]6" : "#sestiende")
+  | ("1[E1]7" : "#sewentiende")
+  | ("1[E1]8" : "#agtiende")
+  | ("1[E1]9" : "#negentiende")
+  | ("2[E1]" : "#twintigste")
+  | ("3[E1]" : "#dertigste")
+  | ("4[E1]" : "#veertigste")
+  | ("5[E1]" : "#vyftigste")
+  | ("6[E1]" : "#sestigste")
+  | ("7[E1]" : "#sewentigste")
+  | ("8[E1]" : "#tagtigste")
+  | ("9[E1]" : "#negentigste")
+  | ("[E2]" : "honderdste")
+  | ("1[E2]" : "honderdste")
+  | ("[E3]" : "duisendste")
+  | ("[E6]" : "miljoenste")
+  | ("[E9]" : "miljardste")
+;
+
+## Alternatives for grouping digits in long numbers
+
+thousands_delimiters =
+    f.NO_DELIMITER
+  | f.DOT_THOUSANDS
+  | f.SPACE_THOUSANDS
+;
+
+## Basic factorization of digit strings possibly interspersed with thousands
+## delimiters into sums of products of powers of ten.
+
+germanic_factorization = Optimize[
+    thousands_delimiters
+  @ f.WESTERN_FACTORIZATION
+  @ f.GERMANIC_DECADE_FLOP
+];
+
+## Fix-up rules
+
+## Before units, teens and decades in larger numbers, insert "en"
+## (e.g. honderd en ses, een duisend en een)
+
+below_100 = "#" b.kLower+;
+
+insert_and1 = CDRewrite[
+  " " : " en ",
+  "honderd" | "duisend" | "miljoen" | "miljard",
+  below_100 "[EOS]",
+  sigma_star]
+;
+
+## Also want to insert between hundred and units if those modify
+## thousands, millions, billions, but here we need to be more careful
+## since we don't want "een miljoen en een duisend" -- i.e. should
+## only occur after hundreds.
+
+insert_and2 = CDRewrite[
+  " " : " en ",
+  "honderd",
+  below_100 " " ("duisend" | "milj"),
+  sigma_star
+];
+
+# Removes the "#" marker.
+del_tags = CDRewrite[D["#"], "", "", sigma_star];
+
+fix = Optimize[insert_and1 @ insert_and2 @ del_tags @ remove_one_before_100];
+
+## Base for CARDINAL_NUMBER_NAME. Produces a map of factors to cardinal number
+## words, in no particular order: the order will be constrained by composing
+## this with the factorization machine (below).
+cardinal_number_name_base = Optimize[
+  (
+   (cardinal_vocabulary ("" : " "))* cardinal_vocabulary
+  )
+  @ fix
+];
+
+################################################################################
+## Main Target: Cardinal number names in counting form
+
+export CARDINAL_NUMBER_NAME = Optimize[
+    germanic_factorization
+  @ mark_tens
+  @ cardinal_number_name_base]
+;
+
+################################################################################
+## Base for ordinal number names
+
+ordinal_number_name_base = Optimize[
+   (
+     (cardinal_vocabulary ("" : " "))* ordinal_vocabulary
+   )
+   @ fix
+];
+
+
+## Explicitly written ordinal endings. A cursory check on some examples on the
+## Web suggests that the Dutch model
+##
+## http://en.wikipedia.org/wiki/Ordinal_indicator#Dutch
+##
+## may be reasonable.
+##
+## This grammar actually overgenerates in that "ste" and "de" are of course in
+## principle restricted to ordinals that end in those respective suffixes.
+
+ordinal_endings =
+    ("ste" : "")
+  | ("de" : "")
+  | ("e" : "")
+;
+
+################################################################################
+## Main Target: Ordinal number names
+
+export ORDINAL_NUMBER_NAME_WITHOUT_OVERT_MARKING = Optimize[
+   germanic_factorization
+ @ mark_tens
+ @ ordinal_number_name_base]
+;
+
+# Ordinal numbers that have a written ending, such as "1ste"
+export ORDINAL_NUMBER_NAME = Optimize[
+  ORDINAL_NUMBER_NAME_WITHOUT_OVERT_MARKING
+  ordinal_endings]
+;
+
+################################################################################
+## Hooks for decimal numbers and other "non-standard" numbers
+
+export COMMA = "," : "komma";
+
+export MINUS = "-" : "minus";
+
+export SINGLE_DIGIT = b.kDigit @ CARDINAL_NUMBER_NAME;
+
+################################################################################
+## Spelled out numbers that are likely to occur with currency amounts over which
+## the currency term should "skip":
+
+## $1,3 miljoen -> 1,3 miljoen $
+
+export SPELLED_NUMBERS =  "miljoen" | "miljard";
