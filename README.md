@@ -23,6 +23,7 @@ software:
 * [RE2](https://github.com/google/re2)
 * [NCHLT-inlang Afrikaans Pronunciation Dictionary](http://rma.nwu.ac.za/index.php/resource-catalogue/nchlt-inlang-dictionaries.html)
 * [Afrikaans Language Resources](https://github.com/googlei18n/language-resources/tree/master/af)
+* [Festus G2P runtime and Afrikaans models](https://github.com/googlei18n/language-resources/tree/release)
 
 To use this Docker image, you need to have a working version of Docker; on
 Windows and Mac OS you will also need a way to run a Linux kernel in a virtual
