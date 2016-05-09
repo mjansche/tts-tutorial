@@ -1,6 +1,6 @@
 # tts-tutorial
 
-Software for the [Text-to-Speech tutorial at SLTU 2016](http://mica.edu.vn/sltu2016/index.php?pid=23).
+Software for the [Text-to-Speech tutorial at SLTU 2016](http://mica.edu.vn/sltu2016/index.php?pid=23). Examples of how to use some of these tools can be found in the Lab Session section of the [slide deck](https://goo.gl/BjmmHt) for the tutorial.
 
 The [Dockerfile](Dockerfile) here is used to automatically build the image
 [mjansche/tts-tutorial](https://hub.docker.com/r/mjansche/tts-tutorial/) and as
